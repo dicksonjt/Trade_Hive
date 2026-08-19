@@ -999,8 +999,8 @@ button:hover{
         }
         .fourth-bottom{
             flex-direction: column;
-            padding: 20px 5px ;
-            width: 100%;
+            padding: 20px 35px ;
+            width: auto;
             gap: 30px;
             align-items: center;
         }
@@ -1016,7 +1016,7 @@ button:hover{
 
         }
         .free-plan, .pro-plan, .elite-plan{
-            width: 250px;height: 500px;
+            width: 300px;height: 500px;
             padding: 15px 15px;
 
         }
@@ -1048,6 +1048,136 @@ button:hover{
             margin-top: 35px;
         }
 }
+@media (min-width:600px) and (max-width:668px){
+        .hero{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            padding: 70px 56px;
+            gap: 48px;
+        }
+}
+@media only screen and (min-width: 600px) and (max-width:768px) {
+     #community-responsive, #how-it-works-responsive{
+        display: none;
+    }
+    nav{
+        padding: 0 10px;
+    }
+    .nav-scrolled .logo{
+            display: flex !important;
+    }
+    .nav-scrolled .logo-img{
+            height: 30px;
+            width: 30px;
+            margin-right: 5px;
+    }
+    .nav-scrolled span.name-t{
+            font-size: 12px;
+    }
+    .nav-scrolled span.name-h{
+            font-size: 12px;
+    }
+    .nav-scrolled #pricing-responsive{
+        margin-right: 12px;
+    }
+    .nav-scrolled #about-responsive{
+        margin-left: 12px;
+    }
+    .second-bottom{
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 60px 30px ;
+            border: none;
+            justify-content: space-around;
+            width: 100%;
+            gap: 30px;
+            border-radius: 18px;
+            background-color:whitesmoke;
+
+    }
+    .third-bottom{
+            display: flex;
+            flex-direction: column;
+
+    }
+    .third-bottom-left {
+            display: none;
+    }
+    .fourth-bottom{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        padding:30px 30px;
+        border: none;
+        justify-content: space-around;
+        width: auto;
+        gap: 30px;
+    }
+    .third-bottom-right-subtitle{
+        font-size: 16px;
+    }
+    .third-bottom-right-title {
+        font-size: 20px;
+    }
+}
+@media  (min-width:758px) and (max-width:992px) {
+        nav{
+            padding: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a{
+            font-size: 17px;
+            padding: 15px 15px;
+        }
+        .login-btn{
+            margin-right: 0;
+            padding: 0 10px;
+        }
+        .signup-btn{
+            padding: 6px 10px;
+        }
+        .second-bottom{
+            flex-direction: column;
+            gap: 40px;
+        }
+        .third-bottom{
+            flex-direction: column;
+        }
+        .third-bottom-left{
+            display: none;
+        }
+        .third-bottom-right-subtitle{
+            font-size: 18px;
+        }
+        .third-bottom-right-title {
+            font-size: 22px;
+        }
+        .fourth-bottom{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        padding:50px 75px;
+        border: none;
+        justify-content: space-around;
+        width: auto;
+        gap: 30px;
+        }
+}
+
+    
+    
+   
+    
+    
+    
+
+       
+
 
 
 
