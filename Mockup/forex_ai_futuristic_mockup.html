@@ -1,0 +1,519 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.wrap {
+  font-family: 'Space Grotesk', var(--font-sans);
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  padding: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.phone {
+  width: 260px;
+  height: 560px;
+  background: #08090f;
+  border-radius: 36px;
+  border: 2px solid #1e2235;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 0 6px #0d0f1a, 0 0 0 7px #1e2235;
+  display: flex;
+  flex-direction: column;
+}
+
+.notch {
+  width: 80px;
+  height: 18px;
+  background: #08090f;
+  border-radius: 0 0 14px 14px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  border: 2px solid #1e2235;
+  border-top: none;
+}
+
+.screen-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin: 0 0 10px;
+  font-weight: 500;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* DASHBOARD */
+.dash-topbar {
+  padding: 6px 16px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.5px solid #1e2235;
+}
+.dash-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #5dcaa5, #378add);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.live-dot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  color: #5dcaa5;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1d9e75;
+}
+
+.pair-row {
+  padding: 10px 16px 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.pair-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+.pair-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #5dcaa5;
+}
+
+.chart-bg {
+  margin: 0 16px;
+  background: #0d1022;
+  border-radius: 14px;
+  border: 0.5px solid #1e2235;
+  padding: 10px 12px;
+}
+.candles {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 70px;
+}
+.c {
+  flex: 1;
+  border-radius: 2px;
+  position: relative;
+}
+.ai-pred {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pred-label {
+  font-size: 9px;
+  color: #4a5568;
+  font-family: 'JetBrains Mono', monospace;
+}
+.pred-val {
+  font-size: 9px;
+  color: #5dcaa5;
+  font-family: 'JetBrains Mono', monospace;
+}
+.pred-bar {
+  height: 3px;
+  background: #1e2235;
+  border-radius: 10px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.pred-fill {
+  height: 100%;
+  width: 74%;
+  background: linear-gradient(90deg, #1d9e75, #378add);
+  border-radius: 10px;
+}
+
+.stats {
+  display: flex;
+  gap: 6px;
+  padding: 8px 16px;
+}
+.stat {
+  flex: 1;
+  background: #0d1022;
+  border: 0.5px solid #1e2235;
+  border-radius: 12px;
+  padding: 7px 8px;
+}
+.slabel { font-size: 8px; color: #4a5568; margin-bottom: 2px; }
+.sval { font-size: 12px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+.sval.g { color: #5dcaa5; }
+.sval.w { color: #e2e8f0; }
+
+.alert-box {
+  margin: 0 16px;
+  background: linear-gradient(135deg, #1a1205, #251a07);
+  border: 0.5px solid #ba7517;
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.alert-icon { font-size: 14px; color: #ef9f27; margin-top: 1px; }
+.alert-title { font-size: 9px; font-weight: 600; color: #fac775; margin-bottom: 2px; }
+.alert-text { font-size: 8px; color: #854f0b; line-height: 1.5; }
+
+.btns {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+}
+.bbuy {
+  flex: 1;
+  background: linear-gradient(135deg, #0f6e56, #1d9e75);
+  color: #e1f5ee;
+  border: none;
+  border-radius: 12px;
+  padding: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+}
+.bsell {
+  flex: 1;
+  background: linear-gradient(135deg, #7a2010, #d85a30);
+  color: #faece7;
+  border: none;
+  border-radius: 12px;
+  padding: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+}
+
+.nav {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0 10px;
+  border-top: 0.5px solid #1e2235;
+  background: #08090f;
+}
+.nitem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 8px;
+  color: #4a5568;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.nitem.active { color: #378add; }
+.nitem i { font-size: 17px; }
+.nitem.active i { color: #378add; }
+
+/* CHATBOT */
+.chat-phone { background: #07080e; }
+
+.chat-topbar {
+  padding: 6px 16px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 0.5px solid #1a1d2e;
+}
+.ai-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d9e75, #378add);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  flex-shrink: 0;
+}
+.ai-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+.ai-status {
+  font-size: 9px;
+  color: #5dcaa5;
+}
+.online-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: #1d9e75;
+  border-radius: 50%;
+  margin-right: 3px;
+}
+
+.messages {
+  flex: 1;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.msg-ai-wrap { display: flex; gap: 6px; align-items: flex-end; }
+.mini-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d9e75, #378add);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.bubble-ai {
+  background: #0d1a2e;
+  border: 0.5px solid #1a3a5c;
+  border-radius: 4px 14px 14px 14px;
+  padding: 8px 11px;
+  font-size: 10px;
+  color: #b5d4f4;
+  line-height: 1.6;
+  font-family: 'Space Grotesk', sans-serif;
+  max-width: 85%;
+}
+
+.bubble-ai .highlight {
+  color: #5dcaa5;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.msg-user-wrap { display: flex; justify-content: flex-end; }
+.bubble-user {
+  background: linear-gradient(135deg, #0c447c, #185fa5);
+  border-radius: 14px 4px 14px 14px;
+  padding: 8px 11px;
+  font-size: 10px;
+  color: #e6f1fb;
+  line-height: 1.6;
+  font-family: 'Space Grotesk', sans-serif;
+  max-width: 85%;
+  border: 0.5px solid #378add;
+}
+
+.backtest-chip {
+  background: #0a1a0f;
+  border: 0.5px solid #1d9e75;
+  border-radius: 10px;
+  padding: 6px 10px;
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+.chip-stat { text-align: center; }
+.chip-label { font-size: 8px; color: #085041; font-family: 'JetBrains Mono', monospace; }
+.chip-val { font-size: 11px; font-weight: 600; color: #5dcaa5; font-family: 'JetBrains Mono', monospace; }
+
+.input-area {
+  padding: 8px 12px 10px;
+  border-top: 0.5px solid #1a1d2e;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: #07080e;
+}
+.chat-in {
+  flex: 1;
+  background: #0d1022;
+  border: 0.5px solid #1e2235;
+  border-radius: 20px;
+  padding: 7px 12px;
+  font-size: 10px;
+  color: #4a5568;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.send-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d9e75, #378add);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.send-btn i { font-size: 14px; color: white; }
+</style>
+
+<h2 class="sr-only">Futuristic ForexAI app mockup with dashboard and chatbot screens</h2>
+
+<div class="wrap">
+
+  <div>
+    <p class="screen-label"><i class="ti ti-chart-candlestick" aria-hidden="true" style="font-size:13px;vertical-align:-2px;margin-right:4px"></i>Dashboard</p>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="dash-topbar">
+        <span class="dash-logo">ForexAI</span>
+        <span class="live-dot"><span class="dot"></span> LIVE</span>
+      </div>
+
+      <div class="pair-row">
+        <span class="pair-name">EUR / USD</span>
+        <span class="pair-price">1.0842 <span style="color:#5dcaa5">+0.12%</span></span>
+      </div>
+
+      <div style="padding: 6px 16px;">
+        <div class="chart-bg">
+          <div class="candles">
+            <div class="c" style="height:35px;background:#0f6e56;"></div>
+            <div class="c" style="height:50px;background:#993c1d;"></div>
+            <div class="c" style="height:28px;background:#0f6e56;"></div>
+            <div class="c" style="height:60px;background:#0f6e56;"></div>
+            <div class="c" style="height:42px;background:#993c1d;"></div>
+            <div class="c" style="height:55px;background:#0f6e56;"></div>
+            <div class="c" style="height:65px;background:#0f6e56;"></div>
+            <div class="c" style="height:48px;background:#993c1d;"></div>
+            <div class="c" style="height:58px;background:#0f6e56;"></div>
+            <div class="c" style="height:70px;background:#0f6e56;"></div>
+          </div>
+          <div class="ai-pred">
+            <span class="pred-label">AI confidence</span>
+            <span class="pred-val">BULLISH ↑ 74%</span>
+          </div>
+          <div class="pred-bar"><div class="pred-fill"></div></div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="slabel">P&L today</div>
+          <div class="sval g">+$142</div>
+        </div>
+        <div class="stat">
+          <div class="slabel">Win rate</div>
+          <div class="sval w">68%</div>
+        </div>
+        <div class="stat">
+          <div class="slabel">Open</div>
+          <div class="sval w">3</div>
+        </div>
+      </div>
+
+      <div style="padding: 0 16px 8px;">
+        <div class="alert-box">
+          <i class="ti ti-alert-triangle alert-icon" aria-hidden="true"></i>
+          <div>
+            <div class="alert-title">Fed Rate Decision — 2hrs</div>
+            <div class="alert-text">High volatility expected on all USD pairs. Consider tightening stop losses.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btns">
+        <button class="bbuy">Buy</button>
+        <button class="bsell">Sell</button>
+      </div>
+
+      <div class="nav">
+        <div class="nitem active"><i class="ti ti-chart-candlestick" aria-hidden="true"></i>Charts</div>
+        <div class="nitem"><i class="ti ti-robot" aria-hidden="true"></i>AI</div>
+        <div class="nitem"><i class="ti ti-history" aria-hidden="true"></i>History</div>
+        <div class="nitem"><i class="ti ti-settings" aria-hidden="true"></i>Settings</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p class="screen-label"><i class="ti ti-message-chatbot" aria-hidden="true" style="font-size:13px;vertical-align:-2px;margin-right:4px"></i>AI Analyst chat</p>
+    <div class="phone chat-phone">
+      <div class="notch"></div>
+      <div class="chat-topbar">
+        <div class="ai-avatar"><i class="ti ti-robot" aria-hidden="true" style="font-size:14px"></i></div>
+        <div>
+          <div class="ai-name">ForexAI Analyst</div>
+          <div class="ai-status"><span class="online-dot"></span>Online · Analyzing markets</div>
+        </div>
+      </div>
+
+      <div class="messages">
+
+        <div class="msg-ai-wrap">
+          <div class="mini-avatar"><i class="ti ti-robot" aria-hidden="true" style="font-size:10px"></i></div>
+          <div class="bubble-ai">
+            EUR/USD forming a <span class="highlight">bullish flag</span> on 1H. Expecting breakout above <span class="highlight">1.0860</span>.
+          </div>
+        </div>
+
+        <div class="msg-user-wrap">
+          <div class="bubble-user">I disagree — RSI is overbought. Price will reverse down.</div>
+        </div>
+
+        <div class="msg-ai-wrap">
+          <div class="mini-avatar"><i class="ti ti-robot" aria-hidden="true" style="font-size:10px"></i></div>
+          <div>
+            <div class="bubble-ai">
+              Valid point. But volume is rising on up moves — overbought can hold in strong trends. What's your stop loss?
+            </div>
+            <div class="backtest-chip">
+              <div class="chip-stat">
+                <div class="chip-label">win rate</div>
+                <div class="chip-val">61%</div>
+              </div>
+              <div class="chip-stat">
+                <div class="chip-label">R:R ratio</div>
+                <div class="chip-val">1:2.3</div>
+              </div>
+              <div class="chip-stat">
+                <div class="chip-label">backtests</div>
+                <div class="chip-val">847</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-user-wrap">
+          <div class="bubble-user">Stop loss below 1.0810 support zone.</div>
+        </div>
+
+        <div class="msg-ai-wrap">
+          <div class="mini-avatar"><i class="ti ti-robot" aria-hidden="true" style="font-size:10px"></i></div>
+          <div class="bubble-ai">
+            Smart. Risk/reward is favorable. <span class="highlight">Proceeding with caution</span> given Fed decision in 2hrs.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="input-area">
+        <div class="chat-in">Type your analysis...</div>
+        <button class="send-btn" aria-label="Send message"><i class="ti ti-send" aria-hidden="true"></i></button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

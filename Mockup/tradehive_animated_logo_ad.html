@@ -1,0 +1,247 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+.stage{width:100%;height:420px;background:#07080e;border-radius:16px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;}
+canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
+.content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;}
+.hex-wrap{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;opacity:0;}
+svg.hex{width:120px;height:120px;}
+.logo-text{opacity:0;text-align:center;margin-top:18px;}
+.trade{font-size:42px;font-weight:700;color:#5dcaa5;}
+.hive{font-size:42px;font-weight:700;color:#378add;}
+.tagline{font-size:12px;letter-spacing:4px;color:#4a5568;margin-top:6px;opacity:0;}
+.tagline span{color:#5dcaa5;}
+.features{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:32px;padding:24px;opacity:0;}
+.feat{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.feat-icon{width:36px;height:36px;border-radius:10px;background:#0d1a2e;border:0.5px solid #1a3a5c;display:flex;align-items:center;justify-content:center;font-size:18px;color:#378add;}
+.feat-label{font-size:10px;color:#4a5568;text-align:center;line-height:1.4;}
+.cta{opacity:0;margin-top:24px;text-align:center;}
+.cta-text{font-size:13px;color:#e2e8f0;letter-spacing:1px;}
+.cta-url{font-size:11px;color:#5dcaa5;margin-top:4px;letter-spacing:2px;}
+.progress{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(90deg,#1d9e75,#378add);width:0%;border-radius:0 2px 2px 0;}
+.candle-anim{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;pointer-events:none;}
+.particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+</style>
+
+<div class="stage">
+  <canvas id="bgCanvas"></canvas>
+  <div class="particles" id="particles"></div>
+
+  <div class="content">
+    <div class="hex-wrap" id="hexWrap">
+      <svg class="hex" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <polygon id="hexOuter" points="60,4 104,28 104,76 60,100 16,76 16,28" fill="#0d1a2e" stroke="#378add" stroke-width="1.5" opacity="0"/>
+        <rect id="c1" x="28" y="58" width="9" height="28" rx="2" fill="#1d9e75" opacity="0"/>
+        <line id="w1t" x1="32.5" y1="48" x2="32.5" y2="58" stroke="#1d9e75" stroke-width="2" opacity="0"/>
+        <line id="w1b" x1="32.5" y1="86" x2="32.5" y2="93" stroke="#1d9e75" stroke-width="2" opacity="0"/>
+        <rect id="c2" x="42" y="42" width="9" height="32" rx="2" fill="#993c1d" opacity="0"/>
+        <line id="w2t" x1="46.5" y1="33" x2="46.5" y2="42" stroke="#993c1d" stroke-width="2" opacity="0"/>
+        <line id="w2b" x1="46.5" y1="74" x2="46.5" y2="82" stroke="#993c1d" stroke-width="2" opacity="0"/>
+        <rect id="c3" x="56" y="34" width="9" height="30" rx="2" fill="#1d9e75" opacity="0"/>
+        <line id="w3t" x1="60.5" y1="25" x2="60.5" y2="34" stroke="#1d9e75" stroke-width="2" opacity="0"/>
+        <line id="w3b" x1="60.5" y1="64" x2="60.5" y2="72" stroke="#1d9e75" stroke-width="2" opacity="0"/>
+        <rect id="c4" x="70" y="40" width="9" height="26" rx="2" fill="#1d9e75" opacity="0"/>
+        <line id="w4t" x1="74.5" y1="30" x2="74.5" y2="40" stroke="#1d9e75" stroke-width="2" opacity="0"/>
+        <line id="w4b" x1="74.5" y1="66" x2="74.5" y2="74" stroke="#1d9e75" stroke-width="2" opacity="0"/>
+        <path id="trendPath" d="M28 75 Q46 60 60 48 Q72 38 82 30" fill="none" stroke="#5dcaa5" stroke-width="2" stroke-dasharray="200" stroke-dashoffset="200" opacity="0.9"/>
+        <circle id="trendDot" cx="82" cy="30" r="3" fill="#5dcaa5" opacity="0"/>
+      </svg>
+    </div>
+
+    <div class="logo-text" id="logoText">
+      <span class="trade">Trade</span><span class="hive">Hive</span>
+    </div>
+    <div class="tagline" id="tagline">AI <span>TRADING</span> NETWORK</div>
+
+    <div class="features" id="features">
+      <div class="feat">
+        <div class="feat-icon"><i class="ti ti-robot" aria-hidden="true"></i></div>
+        <div class="feat-label">AI<br>Analysis</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
+        <div class="feat-label">Social<br>Trading</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+        <div class="feat-label">Live<br>Charts</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><i class="ti ti-bell" aria-hidden="true"></i></div>
+        <div class="feat-label">Smart<br>Alerts</div>
+      </div>
+    </div>
+
+    <div class="cta" id="cta">
+      <div class="cta-text">The future of forex trading is here</div>
+      <div class="cta-url">tradehive.app</div>
+    </div>
+  </div>
+
+  <div class="progress" id="progress"></div>
+</div>
+
+<script>
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+
+const hexPts = [[60,4],[104,28],[104,76],[60,100],[16,76],[16,28]];
+let gridLines = [];
+for(let i=0;i<12;i++){
+  gridLines.push({x:Math.random()*400,y:Math.random()*420,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,o:Math.random()*0.15+0.05});
+}
+
+let bgAlpha = 0;
+function drawBg(t) {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#07080e';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  gridLines.forEach(l=>{
+    l.x+=l.vx; l.y+=l.vy;
+    if(l.x<0||l.x>canvas.width) l.vx*=-1;
+    if(l.y<0||l.y>canvas.height) l.vy*=-1;
+    ctx.strokeStyle=`rgba(29,158,117,${l.o*bgAlpha})`;
+    ctx.lineWidth=0.5;
+    ctx.beginPath();
+    ctx.moveTo(l.x,0);
+    ctx.lineTo(l.x,canvas.height);
+    ctx.stroke();
+  });
+  for(let i=0;i<8;i++){
+    const x=(canvas.width/8)*i;
+    ctx.strokeStyle=`rgba(55,138,221,${0.04*bgAlpha})`;
+    ctx.lineWidth=0.5;
+    ctx.beginPath();
+    ctx.moveTo(x,0);
+    ctx.lineTo(x,canvas.height);
+    ctx.stroke();
+  }
+}
+
+function lerp(a,b,t){return a+(b-a)*t;}
+function easeOut(t){return 1-Math.pow(1-t,3);}
+function easeIn(t){return t*t*t;}
+function easeInOut(t){return t<0.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1;}
+
+const hexWrap=document.getElementById('hexWrap');
+const hexOuter=document.getElementById('hexOuter');
+const logoText=document.getElementById('logoText');
+const tagline=document.getElementById('tagline');
+const features=document.getElementById('features');
+const cta=document.getElementById('cta');
+const progress=document.getElementById('progress');
+const candles=['c1','c2','c3','c4'].map(id=>document.getElementById(id));
+const wicks=['w1t','w1b','w2t','w2b','w3t','w3b','w4t','w4b'].map(id=>document.getElementById(id));
+const trendPath=document.getElementById('trendPath');
+const trendDot=document.getElementById('trendDot');
+
+const DUR=15000;
+let start=null;
+let animFrame;
+
+function animate(ts){
+  if(!start) start=ts;
+  const el=ts-start;
+  const t=Math.min(el/DUR,1);
+  bgAlpha=Math.min(t*5,1);
+  drawBg(t);
+  progress.style.width=(t*100)+'%';
+
+  // Phase 1 0-2s: hex appears
+  if(el>200){
+    const p=Math.min((el-200)/800,1);
+    hexWrap.style.opacity=easeOut(p);
+    hexWrap.style.transform=`scale(${lerp(0.5,1,easeOut(p))})`;
+    hexOuter.setAttribute('opacity',easeOut(p));
+  }
+
+  // Phase 2 1.5-4s: candles rise
+  if(el>1500){
+    const p=Math.min((el-1500)/300,1);
+    candles.forEach((c,i)=>{
+      const cp=Math.min(Math.max((el-1500-i*150)/400,0),1);
+      c.setAttribute('opacity',easeOut(cp));
+    });
+    wicks.forEach((w,i)=>{
+      const wp=Math.min(Math.max((el-1600-i*100)/300,0),1);
+      w.setAttribute('opacity',easeOut(wp));
+    });
+  }
+
+  // Phase 3 3-4.5s: trendline draws
+  if(el>3000){
+    const p=Math.min((el-3000)/1200,1);
+    const offset=200*(1-easeInOut(p));
+    trendPath.setAttribute('stroke-dashoffset',offset);
+    trendDot.setAttribute('opacity',easeOut(p));
+  }
+
+  // Phase 4 4-6s: logo text appears
+  if(el>4000){
+    const p=Math.min((el-4000)/700,1);
+    logoText.style.opacity=easeOut(p);
+    logoText.style.transform=`translateY(${lerp(20,0,easeOut(p))}px)`;
+  }
+
+  // Phase 5 5-7s: tagline
+  if(el>5000){
+    const p=Math.min((el-5000)/600,1);
+    tagline.style.opacity=easeOut(p);
+    tagline.style.letterSpacing=`${lerp(10,4,easeOut(p))}px`;
+  }
+
+  // Phase 6 7-10s: features
+  if(el>7000){
+    const p=Math.min((el-7000)/800,1);
+    features.style.opacity=easeOut(p);
+    features.style.transform=`translateY(${lerp(20,0,easeOut(p))}px)`;
+  }
+
+  // Phase 7 10.5-13s: CTA
+  if(el>10500){
+    const p=Math.min((el-10500)/800,1);
+    cta.style.opacity=easeOut(p);
+    // hide features when cta shows
+    if(p>0.3){
+      features.style.opacity=Math.max(1-(p-0.3)/0.7,0);
+    }
+  }
+
+  // pulse hex
+  if(el>2000){
+    const pulse=Math.sin(el/600)*0.04+1;
+    hexOuter.setAttribute('stroke-width', 1.5+Math.sin(el/400)*0.5);
+  }
+
+  if(t<1){
+    animFrame=requestAnimationFrame(animate);
+  } else {
+    // restart
+    setTimeout(()=>{
+      start=null;
+      hexWrap.style.opacity=0;
+      hexWrap.style.transform='scale(0.5)';
+      hexOuter.setAttribute('opacity',0);
+      candles.forEach(c=>c.setAttribute('opacity',0));
+      wicks.forEach(w=>w.setAttribute('opacity',0));
+      trendPath.setAttribute('stroke-dashoffset',200);
+      trendDot.setAttribute('opacity',0);
+      logoText.style.opacity=0;
+      logoText.style.transform='translateY(20px)';
+      tagline.style.opacity=0;
+      features.style.opacity=0;
+      cta.style.opacity=0;
+      bgAlpha=0;
+      animFrame=requestAnimationFrame(animate);
+    },1500);
+  }
+}
+
+animFrame=requestAnimationFrame(animate);
+</script>

@@ -1,0 +1,822 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Space Grotesk',sans-serif;}
+
+.app{padding:1rem 0;}
+.screen-nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.snav-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid #1e2235;background:#0d1022;color:#4a5568;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;}
+.snav-btn.active{background:#0d1a2e;color:#378add;border-color:#1a3a5c;}
+.snav-btn i{font-size:14px;}
+.screen-label{font-size:11px;color:var(--color-text-secondary);text-align:center;margin-bottom:14px;font-weight:500;}
+
+.duo{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;}
+.phone{width:200px;flex-shrink:0;background:#08090f;border-radius:32px;border:2px solid #1e2235;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 5px #0d0f1a,0 0 0 6px #1e2235;}
+.notch{width:60px;height:14px;background:#08090f;border-radius:0 0 10px 10px;margin:0 auto;border:1.5px solid #1e2235;border-top:none;}
+.phone-nav{display:flex;justify-content:space-around;padding:6px 0 8px;border-top:0.5px solid #1e2235;background:#07080e;}
+.pnav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:7px;color:#4a5568;cursor:pointer;font-family:'Space Grotesk',sans-serif;padding:2px 6px;border-radius:8px;}
+.pnav-item.active{color:#378add;background:#0d1a2e;}
+.pnav-item i{font-size:15px;}
+
+.browser{background:#08090f;border-radius:14px;border:1px solid #1e2235;overflow:hidden;flex:1;}
+.browser-bar{background:#0d0f1a;padding:6px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #1e2235;}
+.bdots{display:flex;gap:4px;}
+.bdot{width:8px;height:8px;border-radius:50%;}
+.burl{flex:1;background:#08090f;border:0.5px solid #1e2235;border-radius:16px;padding:3px 10px;font-size:8px;color:#4a5568;font-family:'JetBrains Mono',monospace;}
+.web-layout{display:grid;grid-template-columns:44px 1fr;min-height:420px;}
+.web-sidebar{background:#07080e;border-right:0.5px solid #1e2235;display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:12px;}
+.wsico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#4a5568;cursor:pointer;}
+.wsico.active{background:#0d1a2e;color:#378add;}
+.wlogo{font-size:10px;font-weight:700;background:linear-gradient(90deg,#5dcaa5,#378add);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:2px;}
+.web-content{overflow:hidden;}
+
+/* shared components */
+.topbar{padding:7px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5px solid #1e2235;}
+.tbar-title{font-size:12px;font-weight:600;color:#e2e8f0;}
+.live-badge{display:flex;align-items:center;gap:3px;font-size:8px;color:#5dcaa5;background:#0a1a0f;padding:2px 6px;border-radius:10px;border:0.5px solid #1d9e75;}
+.ldot{width:4px;height:4px;border-radius:50%;background:#1d9e75;}
+.candles{display:flex;align-items:flex-end;gap:3px;}
+.c{flex:1;border-radius:1px;}
+.pair-name{font-family:'Space Grotesk',sans-serif;font-weight:600;color:#e2e8f0;}
+.pair-price{font-family:'JetBrains Mono',monospace;color:#5dcaa5;}
+.pred-bar-bg{height:3px;background:#1e2235;border-radius:10px;overflow:hidden;}
+.pred-fill{height:100%;background:linear-gradient(90deg,#1d9e75,#378add);border-radius:10px;}
+.stat{background:#0d1022;border:0.5px solid #1e2235;border-radius:10px;padding:6px 8px;}
+.slabel{font-size:7px;color:#4a5568;margin-bottom:2px;}
+.sval{font-family:'JetBrains Mono',monospace;font-weight:600;}
+.alert-box{background:linear-gradient(135deg,#1a1205,#251a07);border:0.5px solid #ba7517;border-radius:10px;padding:7px 9px;display:flex;gap:7px;align-items:flex-start;}
+.btn-buy{background:linear-gradient(135deg,#0f6e56,#1d9e75);color:#e1f5ee;border:none;border-radius:10px;padding:8px;font-size:10px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;flex:1;}
+.btn-sell{background:linear-gradient(135deg,#7a2010,#d85a30);color:#faece7;border:none;border-radius:10px;padding:8px;font-size:10px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;flex:1;}
+.bubble-ai{background:#0d1a2e;border:0.5px solid #1a3a5c;border-radius:3px 10px 10px 10px;padding:7px 9px;font-size:9px;color:#b5d4f4;line-height:1.6;font-family:'Space Grotesk',sans-serif;}
+.bubble-me{background:linear-gradient(135deg,#0c447c,#185fa5);border-radius:10px 3px 10px 10px;padding:7px 9px;font-size:9px;color:#e6f1fb;line-height:1.6;font-family:'Space Grotesk',sans-serif;border:0.5px solid #378add;}
+.hl{color:#5dcaa5;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:8px;}
+.input-row{padding:6px 10px;border-top:0.5px solid #1e2235;display:flex;gap:6px;align-items:center;background:#07080e;}
+.chat-in{flex:1;background:#0d1022;border:0.5px solid #1e2235;border-radius:16px;padding:5px 10px;font-size:8px;color:#4a5568;font-family:'Space Grotesk',sans-serif;}
+.send-btn{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.contact{padding:6px 10px;display:flex;align-items:center;gap:7px;cursor:pointer;}
+.contact.active{background:#0d1a2e;}
+.avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0;position:relative;}
+.oring{position:absolute;bottom:0;right:0;width:7px;height:7px;border-radius:50%;border:1.5px solid #07080e;}
+.cname{font-size:9px;font-weight:500;color:#e2e8f0;}
+.clast{font-size:7px;color:#4a5568;margin-top:1px;}
+.unread{background:#378add;color:#e6f1fb;font-size:6px;font-weight:600;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.toolbar{padding:6px 10px;display:flex;gap:5px;border-bottom:0.5px solid #1e2235;flex-wrap:wrap;}
+.tbtn{padding:3px 7px;border-radius:6px;font-size:8px;color:#4a5568;cursor:pointer;border:0.5px solid #1e2235;display:flex;align-items:center;gap:3px;font-family:'Space Grotesk',sans-serif;background:#08090f;}
+.tbtn.active{background:#0d1a2e;color:#378add;border-color:#1a3a5c;}
+.tbtn i{font-size:11px;}
+.ai-notif{background:#07080e;border:0.5px solid #1d9e75;border-radius:10px;overflow:hidden;margin:6px 10px;}
+.notif-header{background:#0a1a0f;padding:5px 8px;display:flex;align-items:center;gap:5px;justify-content:space-between;}
+.notif-title{font-size:8px;font-weight:600;color:#5dcaa5;display:flex;align-items:center;gap:4px;}
+.notif-body{padding:6px 8px;font-size:8px;color:#9fe1cb;line-height:1.5;}
+.score-box{background:#0a1a0f;border:0.5px solid #1d9e75;border-radius:8px;padding:7px 9px;}
+.score-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.score-label{font-size:7px;color:#085041;}
+.score-bar-bg{flex:1;height:3px;background:#1e2235;border-radius:10px;margin:0 5px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:10px;}
+.score-num{font-size:8px;font-weight:600;font-family:'JetBrains Mono',monospace;color:#5dcaa5;}
+
+.screen{display:none;}
+.screen.active{display:block;}
+</style>
+
+<h2 class="sr-only">TradeHive full app mockup with mobile and web side by side for each screen</h2>
+
+<div class="app">
+  <div class="screen-nav">
+    <div class="snav-btn active" onclick="showScreen('dashboard')"><i class="ti ti-chart-candlestick" aria-hidden="true"></i>Dashboard</div>
+    <div class="snav-btn" onclick="showScreen('analysis')"><i class="ti ti-pencil" aria-hidden="true"></i>Analysis</div>
+    <div class="snav-btn" onclick="showScreen('aichat')"><i class="ti ti-robot" aria-hidden="true"></i>AI Analyst</div>
+    <div class="snav-btn" onclick="showScreen('social')"><i class="ti ti-users" aria-hidden="true"></i>Social Hub</div>
+    <div class="snav-btn" onclick="showScreen('alerts')"><i class="ti ti-bell" aria-hidden="true"></i>Alerts</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="screen active" id="screen-dashboard">
+    <p class="screen-label">Dashboard — live charts, stats and trade buttons</p>
+    <div class="duo">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="topbar">
+          <span style="font-size:12px;font-weight:700;background:linear-gradient(90deg,#5dcaa5,#378add);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">TradeHive</span>
+          <div class="live-badge"><span class="ldot"></span>Live</div>
+        </div>
+        <div style="padding:6px 10px 4px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:600;color:#e2e8f0;">EUR/USD</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5dcaa5;">1.0842 +0.12%</span>
+          </div>
+          <div style="background:#0d1022;border-radius:12px;border:0.5px solid #1e2235;padding:8px 10px;">
+            <div class="candles" style="height:70px;margin-bottom:6px;">
+              <div class="c" style="height:35px;background:#0f6e56;"></div>
+              <div class="c" style="height:50px;background:#993c1d;"></div>
+              <div class="c" style="height:28px;background:#0f6e56;"></div>
+              <div class="c" style="height:60px;background:#0f6e56;"></div>
+              <div class="c" style="height:42px;background:#993c1d;"></div>
+              <div class="c" style="height:55px;background:#0f6e56;"></div>
+              <div class="c" style="height:65px;background:#0f6e56;"></div>
+              <div class="c" style="height:48px;background:#993c1d;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:8px;color:#4a5568;font-family:'JetBrains Mono',monospace;">AI prediction</span>
+              <span style="font-size:8px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">BULLISH ↑ 74%</span>
+            </div>
+            <div class="pred-bar-bg"><div class="pred-fill" style="width:74%;"></div></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:5px;padding:5px 10px;">
+          <div class="stat" style="flex:1;"><div class="slabel">P&L</div><div class="sval" style="font-size:11px;color:#5dcaa5;">+$142</div></div>
+          <div class="stat" style="flex:1;"><div class="slabel">Win rate</div><div class="sval" style="font-size:11px;color:#e2e8f0;">68%</div></div>
+          <div class="stat" style="flex:1;"><div class="slabel">Open</div><div class="sval" style="font-size:11px;color:#e2e8f0;">3</div></div>
+        </div>
+        <div style="padding:0 10px 6px;">
+          <div class="alert-box">
+            <i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:12px;color:#ef9f27;flex-shrink:0;margin-top:1px;"></i>
+            <div>
+              <div style="font-size:8px;font-weight:600;color:#fac775;">Fed Rate — 2hrs</div>
+              <div style="font-size:7px;color:#854f0b;margin-top:1px;">High USD volatility expected</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;padding:0 10px 10px;">
+          <button class="btn-buy">Buy</button>
+          <button class="btn-sell">Sell</button>
+        </div>
+        <div class="phone-nav">
+          <div class="pnav-item active"><i class="ti ti-chart-candlestick" aria-hidden="true"></i>Charts</div>
+          <div class="pnav-item"><i class="ti ti-pencil" aria-hidden="true"></i>Analyze</div>
+          <div class="pnav-item"><i class="ti ti-robot" aria-hidden="true"></i>AI</div>
+          <div class="pnav-item"><i class="ti ti-users" aria-hidden="true"></i>Social</div>
+          <div class="pnav-item"><i class="ti ti-bell" aria-hidden="true"></i>Alerts</div>
+        </div>
+      </div>
+
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="bdots"><div class="bdot" style="background:#d85a30"></div><div class="bdot" style="background:#ef9f27"></div><div class="bdot" style="background:#1d9e75"></div></div>
+          <div class="burl">app.tradehive.io/dashboard</div>
+        </div>
+        <div class="web-layout">
+          <div class="web-sidebar">
+            <span class="wlogo">TH</span>
+            <div class="wsico active"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-users" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-bell" aria-hidden="true"></i></div>
+            <div class="wsico" style="margin-top:auto;"><i class="ti ti-settings" aria-hidden="true"></i></div>
+          </div>
+          <div class="web-content">
+            <div class="topbar">
+              <div style="display:flex;gap:5px;">
+                <span style="padding:3px 8px;border-radius:6px;font-size:9px;background:#0d1a2e;color:#378add;border:0.5px solid #1a3a5c;">EUR/USD</span>
+                <span style="padding:3px 8px;border-radius:6px;font-size:9px;color:#4a5568;border:0.5px solid #1e2235;">GBP/USD</span>
+                <span style="padding:3px 8px;border-radius:6px;font-size:9px;color:#4a5568;border:0.5px solid #1e2235;">USD/JPY</span>
+                <span style="padding:3px 8px;border-radius:6px;font-size:9px;color:#4a5568;border:0.5px solid #1e2235;">XAU/USD</span>
+              </div>
+              <div class="live-badge"><span class="ldot"></span>Live markets</div>
+            </div>
+            <div style="padding:10px 14px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px;">
+                <span style="font-size:16px;font-weight:600;color:#e2e8f0;">EUR / USD</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#5dcaa5;">1.0842</span>
+                  <span style="font-size:10px;color:#1d9e75;background:#0a1a0f;padding:2px 7px;border-radius:8px;border:0.5px solid #0f6e56;">+0.12% ↑</span>
+                </div>
+              </div>
+              <div style="background:#0d1022;border-radius:12px;border:0.5px solid #1e2235;padding:10px 14px;margin-bottom:10px;">
+                <div class="candles" style="height:100px;margin-bottom:8px;">
+                  <div class="c" style="height:40px;background:#0f6e56;"></div>
+                  <div class="c" style="height:58px;background:#993c1d;"></div>
+                  <div class="c" style="height:32px;background:#0f6e56;"></div>
+                  <div class="c" style="height:68px;background:#0f6e56;"></div>
+                  <div class="c" style="height:48px;background:#993c1d;"></div>
+                  <div class="c" style="height:62px;background:#0f6e56;"></div>
+                  <div class="c" style="height:74px;background:#0f6e56;"></div>
+                  <div class="c" style="height:54px;background:#993c1d;"></div>
+                  <div class="c" style="height:66px;background:#0f6e56;"></div>
+                  <div class="c" style="height:82px;background:#0f6e56;"></div>
+                  <div class="c" style="height:60px;background:#993c1d;"></div>
+                  <div class="c" style="height:88px;background:#0f6e56;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span style="font-size:9px;color:#4a5568;font-family:'JetBrains Mono',monospace;">AI prediction</span>
+                  <span style="font-size:9px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">BULLISH ↑ 74% confidence</span>
+                </div>
+                <div class="pred-bar-bg"><div class="pred-fill" style="width:74%;"></div></div>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:10px;">
+                <div class="stat" style="flex:1;"><div class="slabel">Today P&L</div><div class="sval" style="font-size:13px;color:#5dcaa5;">+$142.30</div></div>
+                <div class="stat" style="flex:1;"><div class="slabel">Win rate</div><div class="sval" style="font-size:13px;color:#e2e8f0;">68%</div></div>
+                <div class="stat" style="flex:1;"><div class="slabel">Open trades</div><div class="sval" style="font-size:13px;color:#e2e8f0;">3</div></div>
+                <div class="stat" style="flex:1;"><div class="slabel">Drawdown</div><div class="sval" style="font-size:13px;color:#d85a30;">-2.1%</div></div>
+              </div>
+              <div class="alert-box" style="margin-bottom:10px;">
+                <i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:14px;color:#ef9f27;flex-shrink:0;"></i>
+                <div>
+                  <div style="font-size:10px;font-weight:600;color:#fac775;">Fed Rate Decision in 2hrs — High impact USD event</div>
+                  <div style="font-size:8px;color:#854f0b;margin-top:2px;">Volatility expected across all USD pairs. Consider tightening stop losses.</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn-buy" style="padding:9px 20px;">Buy EUR/USD</button>
+                <button class="btn-sell" style="padding:9px 20px;">Sell EUR/USD</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="screen" id="screen-analysis">
+    <p class="screen-label">Analysis workspace — draw, add indicators and take notes</p>
+    <div class="duo">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="topbar">
+          <span style="font-size:11px;font-weight:600;color:#e2e8f0;">Analysis</span>
+          <div style="display:flex;gap:6px;">
+            <span style="font-size:8px;color:#4a5568;padding:2px 6px;border-radius:6px;border:0.5px solid #1e2235;">1H</span>
+            <span style="font-size:8px;color:#378add;padding:2px 6px;border-radius:6px;border:0.5px solid #1a3a5c;background:#0d1a2e;">4H</span>
+            <span style="font-size:8px;color:#4a5568;padding:2px 6px;border-radius:6px;border:0.5px solid #1e2235;">1D</span>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="tbtn active"><i class="ti ti-cursor-text" aria-hidden="true"></i></div>
+          <div class="tbtn"><i class="ti ti-line" aria-hidden="true"></i></div>
+          <div class="tbtn"><i class="ti ti-minus" aria-hidden="true"></i></div>
+          <div class="tbtn"><i class="ti ti-rectangle" aria-hidden="true"></i></div>
+          <div class="tbtn"><i class="ti ti-wave-sine" aria-hidden="true"></i>MA</div>
+          <div class="tbtn"><i class="ti ti-chart-bar" aria-hidden="true"></i>RSI</div>
+        </div>
+        <div style="padding:6px 10px;">
+          <div style="background:#0d1022;border-radius:12px;border:0.5px solid #1e2235;padding:8px 10px;position:relative;">
+            <div class="candles" style="height:80px;margin-bottom:6px;">
+              <div class="c" style="height:35px;background:#0f6e56;"></div>
+              <div class="c" style="height:52px;background:#993c1d;"></div>
+              <div class="c" style="height:30px;background:#0f6e56;"></div>
+              <div class="c" style="height:62px;background:#0f6e56;"></div>
+              <div class="c" style="height:44px;background:#993c1d;"></div>
+              <div class="c" style="height:58px;background:#0f6e56;"></div>
+              <div class="c" style="height:70px;background:#0f6e56;"></div>
+              <div class="c" style="height:50px;background:#993c1d;"></div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <span style="font-size:7px;color:#ef9f27;font-family:'JetBrains Mono',monospace;">RSI 67.4</span>
+              <span style="font-size:7px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">MACD +0.002</span>
+              <span style="font-size:7px;color:#378add;font-family:'JetBrains Mono',monospace;">MA50 1.0821</span>
+            </div>
+          </div>
+        </div>
+        <div class="ai-notif" style="margin:0 10px 6px;">
+          <div class="notif-header">
+            <div class="notif-title"><i class="ti ti-robot" aria-hidden="true" style="font-size:10px;"></i>AI suggestion</div>
+            <i class="ti ti-chevron-down" aria-hidden="true" style="font-size:11px;color:#4a5568;"></i>
+          </div>
+          <div class="notif-body">Trendline slightly off — connect from Oct 3 low for better accuracy. <span style="color:#5dcaa5;font-weight:600;">Apply fix?</span></div>
+        </div>
+        <div style="padding:0 10px 6px;">
+          <div style="background:#0d1022;border:0.5px solid #1e2235;border-radius:10px;padding:5px 9px;font-size:8px;color:#4a5568;">Add analysis note...</div>
+        </div>
+        <div class="phone-nav">
+          <div class="pnav-item"><i class="ti ti-chart-candlestick" aria-hidden="true"></i>Charts</div>
+          <div class="pnav-item active"><i class="ti ti-pencil" aria-hidden="true"></i>Analyze</div>
+          <div class="pnav-item"><i class="ti ti-robot" aria-hidden="true"></i>AI</div>
+          <div class="pnav-item"><i class="ti ti-users" aria-hidden="true"></i>Social</div>
+          <div class="pnav-item"><i class="ti ti-bell" aria-hidden="true"></i>Alerts</div>
+        </div>
+      </div>
+
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="bdots"><div class="bdot" style="background:#d85a30"></div><div class="bdot" style="background:#ef9f27"></div><div class="bdot" style="background:#1d9e75"></div></div>
+          <div class="burl">app.tradehive.io/analyze</div>
+        </div>
+        <div class="web-layout" style="grid-template-columns:44px 1fr 220px;">
+          <div class="web-sidebar">
+            <span class="wlogo">TH</span>
+            <div class="wsico"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+            <div class="wsico active"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-users" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-bell" aria-hidden="true"></i></div>
+            <div class="wsico" style="margin-top:auto;"><i class="ti ti-settings" aria-hidden="true"></i></div>
+          </div>
+          <div class="web-content">
+            <div class="toolbar" style="padding:7px 12px;">
+              <div class="tbtn active"><i class="ti ti-cursor-text" aria-hidden="true"></i>Cursor</div>
+              <div class="tbtn"><i class="ti ti-line" aria-hidden="true"></i>Trendline</div>
+              <div class="tbtn"><i class="ti ti-minus" aria-hidden="true"></i>H.Level</div>
+              <div class="tbtn"><i class="ti ti-rectangle" aria-hidden="true"></i>Rectangle</div>
+              <div class="tbtn"><i class="ti ti-wave-sine" aria-hidden="true"></i>MA</div>
+              <div class="tbtn"><i class="ti ti-chart-bar" aria-hidden="true"></i>RSI</div>
+              <div class="tbtn"><i class="ti ti-trending-up" aria-hidden="true"></i>MACD</div>
+              <div class="tbtn"><i class="ti ti-trash" aria-hidden="true"></i>Clear</div>
+            </div>
+            <div style="padding:10px 14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-size:14px;font-weight:600;color:#e2e8f0;">EUR / USD</span>
+                <div style="display:flex;gap:5px;">
+                  <span style="font-size:8px;color:#4a5568;padding:2px 7px;border-radius:6px;border:0.5px solid #1e2235;">1M</span>
+                  <span style="font-size:8px;color:#4a5568;padding:2px 7px;border-radius:6px;border:0.5px solid #1e2235;">15M</span>
+                  <span style="font-size:8px;color:#378add;padding:2px 7px;border-radius:6px;border:0.5px solid #1a3a5c;background:#0d1a2e;">1H</span>
+                  <span style="font-size:8px;color:#4a5568;padding:2px 7px;border-radius:6px;border:0.5px solid #1e2235;">4H</span>
+                  <span style="font-size:8px;color:#4a5568;padding:2px 7px;border-radius:6px;border:0.5px solid #1e2235;">1D</span>
+                </div>
+              </div>
+              <div style="background:#0d1022;border-radius:12px;border:0.5px solid #1e2235;padding:10px 14px;margin-bottom:8px;">
+                <div class="candles" style="height:110px;margin-bottom:8px;">
+                  <div class="c" style="height:40px;background:#0f6e56;"></div>
+                  <div class="c" style="height:58px;background:#993c1d;"></div>
+                  <div class="c" style="height:32px;background:#0f6e56;"></div>
+                  <div class="c" style="height:68px;background:#0f6e56;"></div>
+                  <div class="c" style="height:48px;background:#993c1d;"></div>
+                  <div class="c" style="height:62px;background:#0f6e56;"></div>
+                  <div class="c" style="height:74px;background:#0f6e56;"></div>
+                  <div class="c" style="height:54px;background:#993c1d;"></div>
+                  <div class="c" style="height:66px;background:#0f6e56;"></div>
+                  <div class="c" style="height:82px;background:#0f6e56;"></div>
+                  <div class="c" style="height:60px;background:#993c1d;"></div>
+                  <div class="c" style="height:90px;background:#0f6e56;"></div>
+                </div>
+                <div style="display:flex;gap:12px;">
+                  <span style="font-size:8px;color:#ef9f27;font-family:'JetBrains Mono',monospace;">RSI(14) 67.4</span>
+                  <span style="font-size:8px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">MACD +0.0023</span>
+                  <span style="font-size:8px;color:#378add;font-family:'JetBrains Mono',monospace;">MA(50) 1.0821</span>
+                  <span style="font-size:8px;color:#378add;font-family:'JetBrains Mono',monospace;">MA(200) 1.0764</span>
+                </div>
+              </div>
+              <div class="ai-notif" style="margin:0 0 8px;">
+                <div class="notif-header">
+                  <div class="notif-title"><i class="ti ti-robot" aria-hidden="true" style="font-size:10px;"></i>AI suggestion — trendline placement</div>
+                  <i class="ti ti-chevron-down" aria-hidden="true" style="font-size:11px;color:#4a5568;"></i>
+                </div>
+                <div class="notif-body">Your trendline is slightly off — connect from the <span style="color:#5dcaa5;font-weight:600;">Oct 3 low</span> for a more accurate touch point. This improves signal strength by ~18%. <span style="color:#5dcaa5;font-weight:600;cursor:pointer;">Apply fix →</span></div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <div style="flex:1;background:#0d1022;border:0.5px solid #1e2235;border-radius:10px;padding:6px 10px;font-size:9px;color:#4a5568;">Price broke above MA50, forming bullish flag. Targeting 1.0860...</div>
+                <button style="background:#185fa5;color:#e6f1fb;border:none;border-radius:10px;padding:6px 12px;font-size:9px;font-family:'Space Grotesk',sans-serif;cursor:pointer;">Save note</button>
+                <button style="background:#0f6e56;color:#e1f5ee;border:none;border-radius:10px;padding:6px 12px;font-size:9px;font-family:'Space Grotesk',sans-serif;cursor:pointer;">Share</button>
+              </div>
+            </div>
+          </div>
+          <div style="background:#07080e;border-left:0.5px solid #1e2235;display:flex;flex-direction:column;">
+            <div style="padding:8px 10px;border-bottom:0.5px solid #1e2235;font-size:10px;font-weight:600;color:#e2e8f0;">AI Review</div>
+            <div style="padding:8px 10px;display:flex;flex-direction:column;gap:7px;flex:1;">
+              <div class="bubble-ai" style="font-size:8px;">Trendline placement is <span class="hl">accurate</span>. Bullish flag valid. Watch RSI at <span class="hl">67.4</span> — approaching overbought.</div>
+              <div class="score-box">
+                <div style="font-size:8px;color:#4a5568;margin-bottom:5px;font-family:'JetBrains Mono',monospace;">Analysis score</div>
+                <div class="score-row"><span class="score-label">Trend accuracy</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:linear-gradient(90deg,#1d9e75,#5dcaa5);"></div></div><span class="score-num">85%</span></div>
+                <div class="score-row"><span class="score-label">Entry timing</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#185fa5,#378add);"></div></div><span class="score-num">70%</span></div>
+                <div class="score-row"><span class="score-label">Risk management</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:linear-gradient(90deg,#1d9e75,#5dcaa5);"></div></div><span class="score-num">90%</span></div>
+              </div>
+              <div style="display:flex;gap:5px;margin-top:auto;">
+                <button style="flex:1;background:#0d1022;color:#378add;border:0.5px solid #1a3a5c;border-radius:8px;padding:5px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;">Save</button>
+                <button style="flex:1;background:linear-gradient(135deg,#0c447c,#185fa5);color:#e6f1fb;border:none;border-radius:8px;padding:5px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;">Ask AI</button>
+                <button style="flex:1;background:linear-gradient(135deg,#085041,#1d9e75);color:#e1f5ee;border:none;border-radius:8px;padding:5px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;">Share</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI CHAT -->
+  <div class="screen" id="screen-aichat">
+    <p class="screen-label">AI Analyst — argue your analysis with ForexAI</p>
+    <div class="duo">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="topbar">
+          <div style="display:flex;align-items:center;gap:7px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:10px;color:white;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div><div style="font-size:10px;font-weight:600;color:#e2e8f0;">ForexAI Analyst</div><div style="font-size:7px;color:#5dcaa5;">Online</div></div>
+          </div>
+        </div>
+        <div style="flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;gap:5px;align-items:flex-end;">
+            <div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:8px;color:white;flex-shrink:0;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div class="bubble-ai" style="font-size:8px;">EUR/USD forming a <span class="hl">bullish flag</span> on 1H. Target <span class="hl">1.0860</span>.</div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;">
+            <div class="bubble-me" style="font-size:8px;">RSI is overbought though. Won't it reverse?</div>
+          </div>
+          <div style="display:flex;gap:5px;align-items:flex-end;">
+            <div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:8px;color:white;flex-shrink:0;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div>
+              <div class="bubble-ai" style="font-size:8px;">Volume rising on up moves — <span class="hl">overbought holds</span> in strong trends. What's your stop?</div>
+              <div style="background:#0a1a0f;border:0.5px solid #1d9e75;border-radius:8px;padding:5px 8px;margin-top:4px;display:flex;gap:10px;">
+                <div style="text-align:center;"><div style="font-size:6px;color:#085041;font-family:'JetBrains Mono',monospace;">win rate</div><div style="font-size:10px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">61%</div></div>
+                <div style="text-align:center;"><div style="font-size:6px;color:#085041;font-family:'JetBrains Mono',monospace;">R:R</div><div style="font-size:10px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">1:2.3</div></div>
+                <div style="text-align:center;"><div style="font-size:6px;color:#085041;font-family:'JetBrains Mono',monospace;">tests</div><div style="font-size:10px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">847</div></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;">
+            <div class="bubble-me" style="font-size:8px;">Below 1.0810 support.</div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="chat-in">Type your analysis...</div>
+          <button class="send-btn"><i class="ti ti-send" aria-hidden="true" style="font-size:11px;color:white;"></i></button>
+        </div>
+        <div class="phone-nav">
+          <div class="pnav-item"><i class="ti ti-chart-candlestick" aria-hidden="true"></i>Charts</div>
+          <div class="pnav-item"><i class="ti ti-pencil" aria-hidden="true"></i>Analyze</div>
+          <div class="pnav-item active"><i class="ti ti-robot" aria-hidden="true"></i>AI</div>
+          <div class="pnav-item"><i class="ti ti-users" aria-hidden="true"></i>Social</div>
+          <div class="pnav-item"><i class="ti ti-bell" aria-hidden="true"></i>Alerts</div>
+        </div>
+      </div>
+
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="bdots"><div class="bdot" style="background:#d85a30"></div><div class="bdot" style="background:#ef9f27"></div><div class="bdot" style="background:#1d9e75"></div></div>
+          <div class="burl">app.tradehive.io/ai-analyst</div>
+        </div>
+        <div class="web-layout" style="grid-template-columns:44px 1fr 240px;">
+          <div class="web-sidebar">
+            <span class="wlogo">TH</span>
+            <div class="wsico"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+            <div class="wsico active"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-users" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-bell" aria-hidden="true"></i></div>
+            <div class="wsico" style="margin-top:auto;"><i class="ti ti-settings" aria-hidden="true"></i></div>
+          </div>
+          <div class="web-content" style="display:flex;flex-direction:column;">
+            <div class="topbar">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:13px;color:white;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+                <div><div style="font-size:12px;font-weight:600;color:#e2e8f0;">ForexAI Analyst</div><div style="font-size:8px;color:#5dcaa5;"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#1d9e75;margin-right:3px;vertical-align:1px;"></span>Analyzing markets</div></div>
+              </div>
+            </div>
+            <div style="flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:9px;">
+              <div style="display:flex;gap:7px;align-items:flex-end;">
+                <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;flex-shrink:0;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+                <div class="bubble-ai">EUR/USD forming a <span class="hl">bullish flag</span> on the 1H chart. Expecting breakout above <span class="hl">1.0860</span>.</div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;">
+                <div class="bubble-me">I disagree — RSI is overbought. Price will reverse down.</div>
+              </div>
+              <div style="display:flex;gap:7px;align-items:flex-end;">
+                <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;flex-shrink:0;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+                <div>
+                  <div class="bubble-ai">Valid point on RSI. However, volume is increasing on up moves — overbought can hold in strong trends. What's your stop loss?</div>
+                  <div style="background:#0a1a0f;border:0.5px solid #1d9e75;border-radius:8px;padding:6px 10px;margin-top:4px;display:flex;gap:16px;">
+                    <div style="text-align:center;"><div style="font-size:7px;color:#085041;font-family:'JetBrains Mono',monospace;">win rate</div><div style="font-size:12px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">61%</div></div>
+                    <div style="text-align:center;"><div style="font-size:7px;color:#085041;font-family:'JetBrains Mono',monospace;">R:R ratio</div><div style="font-size:12px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">1:2.3</div></div>
+                    <div style="text-align:center;"><div style="font-size:7px;color:#085041;font-family:'JetBrains Mono',monospace;">backtests</div><div style="font-size:12px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">847</div></div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;">
+                <div class="bubble-me">Stop loss below 1.0810 support zone.</div>
+              </div>
+              <div style="display:flex;gap:7px;align-items:flex-end;">
+                <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;flex-shrink:0;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+                <div class="bubble-ai">Smart. Risk/reward is favorable at 1:2.3. <span class="hl">Caution advised</span> — Fed decision in 2hrs may spike volatility.</div>
+              </div>
+            </div>
+            <div class="input-row" style="padding:8px 14px 10px;">
+              <div class="chat-in" style="font-size:10px;">Type your analysis or argue with AI...</div>
+              <div style="width:28px;height:28px;border-radius:50%;background:#0d1022;border:0.5px solid #1e2235;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4a5568;cursor:pointer;flex-shrink:0;"><i class="ti ti-paperclip" aria-hidden="true"></i></div>
+              <button class="send-btn" style="width:28px;height:28px;"><i class="ti ti-send" aria-hidden="true" style="font-size:12px;color:white;"></i></button>
+            </div>
+          </div>
+          <div style="background:#07080e;border-left:0.5px solid #1e2235;display:flex;flex-direction:column;">
+            <div style="padding:8px 10px;border-bottom:0.5px solid #1e2235;font-size:10px;font-weight:600;color:#e2e8f0;">Market context</div>
+            <div style="padding:8px 10px;display:flex;flex-direction:column;gap:7px;">
+              <div style="background:#0d1022;border-radius:10px;border:0.5px solid #1e2235;padding:7px 10px;">
+                <div style="font-size:8px;color:#4a5568;margin-bottom:4px;">EUR/USD snapshot</div>
+                <div class="candles" style="height:40px;margin-bottom:4px;">
+                  <div class="c" style="height:18px;background:#0f6e56;"></div>
+                  <div class="c" style="height:28px;background:#993c1d;"></div>
+                  <div class="c" style="height:14px;background:#0f6e56;"></div>
+                  <div class="c" style="height:34px;background:#0f6e56;"></div>
+                  <div class="c" style="height:22px;background:#993c1d;"></div>
+                  <div class="c" style="height:38px;background:#0f6e56;"></div>
+                  <div class="c" style="height:40px;background:#0f6e56;"></div>
+                </div>
+                <div style="font-size:8px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">1.0842 · Bullish ↑</div>
+              </div>
+              <div class="alert-box">
+                <i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:11px;color:#ef9f27;flex-shrink:0;"></i>
+                <div><div style="font-size:8px;font-weight:600;color:#fac775;">Fed Rate — 2hrs</div><div style="font-size:7px;color:#854f0b;margin-top:1px;">High USD volatility</div></div>
+              </div>
+              <div style="background:#0d1022;border:0.5px solid #1e2235;border-radius:10px;padding:7px 10px;">
+                <div style="font-size:8px;color:#4a5568;margin-bottom:5px;">Past AI accuracy</div>
+                <div style="display:flex;justify-content:space-between;"><span style="font-size:8px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">This week</span><span style="font-size:8px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">72%</span></div>
+                <div style="display:flex;justify-content:space-between;margin-top:3px;"><span style="font-size:8px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">This month</span><span style="font-size:8px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;">68%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOCIAL -->
+  <div class="screen" id="screen-social">
+    <p class="screen-label">Social hub — DMs, groups and @ForexAI tagging</p>
+    <div class="duo">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="topbar">
+          <span style="font-size:11px;font-weight:600;color:#e2e8f0;">Trading Hub</span>
+          <div style="display:flex;gap:4px;">
+            <span style="font-size:8px;color:#378add;padding:2px 7px;border-radius:8px;background:#0d1a2e;border:0.5px solid #1a3a5c;">DMs</span>
+            <span style="font-size:8px;color:#4a5568;padding:2px 7px;border-radius:8px;border:0.5px solid #1e2235;">Groups</span>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div class="contact active">
+            <div class="avatar" style="background:#0d1a2e;color:#378add;">KJ<div class="oring" style="background:#1d9e75;"></div></div>
+            <div style="flex:1;"><div class="cname">Kunle Johnson</div><div class="clast">bro that setup is clean 🔥</div></div>
+            <div class="unread">3</div>
+          </div>
+          <div class="contact">
+            <div class="avatar" style="background:#1a0d2e;color:#a78add;">TA<div class="oring" style="background:#1d9e75;"></div></div>
+            <div style="flex:1;"><div class="cname">Tunde Ade</div><div class="clast">what's your SL on GBP?</div></div>
+          </div>
+          <div class="contact" style="margin-top:5px;padding-top:5px;border-top:0.5px solid #1e2235;">
+            <div style="width:26px;height:26px;border-radius:8px;background:#0d1a2e;display:flex;align-items:center;justify-content:center;font-size:13px;color:#378add;flex-shrink:0;"><i class="ti ti-users" aria-hidden="true"></i></div>
+            <div style="flex:1;"><div class="cname">EUR/USD War Room</div><div class="clast">@ForexAI thoughts on this?</div></div>
+            <div class="unread">7</div>
+          </div>
+          <div class="contact">
+            <div style="width:26px;height:26px;border-radius:8px;background:#0a1a0f;display:flex;align-items:center;justify-content:center;font-size:13px;color:#5dcaa5;flex-shrink:0;"><i class="ti ti-users" aria-hidden="true"></i></div>
+            <div style="flex:1;"><div class="cname">Gold Traders NG</div><div class="clast">NFP tomorrow, be careful</div></div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="chat-in">Search traders or groups...</div>
+          <button style="background:#0d1a2e;color:#378add;border:0.5px solid #1a3a5c;border-radius:10px;padding:4px 8px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;">+ Add</button>
+        </div>
+        <div class="phone-nav">
+          <div class="pnav-item"><i class="ti ti-chart-candlestick" aria-hidden="true"></i>Charts</div>
+          <div class="pnav-item"><i class="ti ti-pencil" aria-hidden="true"></i>Analyze</div>
+          <div class="pnav-item"><i class="ti ti-robot" aria-hidden="true"></i>AI</div>
+          <div class="pnav-item active"><i class="ti ti-users" aria-hidden="true"></i>Social</div>
+          <div class="pnav-item"><i class="ti ti-bell" aria-hidden="true"></i>Alerts</div>
+        </div>
+      </div>
+
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="bdots"><div class="bdot" style="background:#d85a30"></div><div class="bdot" style="background:#ef9f27"></div><div class="bdot" style="background:#1d9e75"></div></div>
+          <div class="burl">app.tradehive.io/social</div>
+        </div>
+        <div class="web-layout" style="grid-template-columns:44px 180px 1fr;">
+          <div class="web-sidebar">
+            <span class="wlogo">TH</span>
+            <div class="wsico"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div class="wsico active"><i class="ti ti-users" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-bell" aria-hidden="true"></i></div>
+            <div class="wsico" style="margin-top:auto;"><i class="ti ti-settings" aria-hidden="true"></i></div>
+          </div>
+          <div style="background:#07080e;border-right:0.5px solid #1e2235;display:flex;flex-direction:column;">
+            <div style="padding:8px 10px;border-bottom:0.5px solid #1e2235;">
+              <div style="font-size:11px;font-weight:600;color:#e2e8f0;margin-bottom:6px;">Trading Hub</div>
+              <div style="background:#0d1022;border:0.5px solid #1e2235;border-radius:8px;padding:4px 8px;font-size:8px;color:#4a5568;display:flex;align-items:center;gap:5px;"><i class="ti ti-search" aria-hidden="true" style="font-size:10px;"></i>Search...</div>
+              <div style="display:flex;gap:0;margin-top:6px;">
+                <div style="flex:1;text-align:center;font-size:8px;padding:3px;color:#378add;border-bottom:1px solid #378add;cursor:pointer;">DMs</div>
+                <div style="flex:1;text-align:center;font-size:8px;padding:3px;color:#4a5568;border-bottom:0.5px solid #1e2235;cursor:pointer;">Groups</div>
+              </div>
+            </div>
+            <div style="flex:1;">
+              <div class="contact active">
+                <div class="avatar" style="background:#0d1a2e;color:#378add;width:26px;height:26px;font-size:9px;">KJ<div class="oring" style="background:#1d9e75;"></div></div>
+                <div style="flex:1;min-width:0;"><div class="cname">Kunle Johnson</div><div class="clast">bro that setup is clean 🔥</div></div>
+                <div class="unread">3</div>
+              </div>
+              <div class="contact">
+                <div class="avatar" style="background:#1a0d2e;color:#a78add;width:26px;height:26px;font-size:9px;">TA<div class="oring" style="background:#1d9e75;"></div></div>
+                <div style="flex:1;min-width:0;"><div class="cname">Tunde Ade</div><div class="clast">SL on GBP?</div></div>
+              </div>
+              <div class="contact" style="margin-top:4px;padding-top:4px;border-top:0.5px solid #1e2235;">
+                <div style="width:26px;height:26px;border-radius:8px;background:#0d1a2e;display:flex;align-items:center;justify-content:center;font-size:12px;color:#378add;flex-shrink:0;"><i class="ti ti-users" aria-hidden="true"></i></div>
+                <div style="flex:1;min-width:0;"><div class="cname">EUR/USD War Room</div><div class="clast">@ForexAI thoughts?</div></div>
+                <div class="unread">7</div>
+              </div>
+              <div class="contact">
+                <div style="width:26px;height:26px;border-radius:8px;background:#0a1a0f;display:flex;align-items:center;justify-content:center;font-size:12px;color:#5dcaa5;flex-shrink:0;"><i class="ti ti-users" aria-hidden="true"></i></div>
+                <div style="flex:1;min-width:0;"><div class="cname">Gold Traders NG</div><div class="clast">NFP tomorrow</div></div>
+                <div class="unread">2</div>
+              </div>
+            </div>
+          </div>
+          <div class="web-content" style="display:flex;flex-direction:column;">
+            <div class="topbar">
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div class="avatar" style="background:#0d1a2e;color:#378add;width:26px;height:26px;font-size:9px;">KJ</div>
+                <div><div style="font-size:11px;font-weight:600;color:#e2e8f0;">Kunle Johnson</div><div style="font-size:8px;color:#5dcaa5;">Online · Fellow trader</div></div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <div style="width:24px;height:24px;border-radius:7px;background:#0d1022;border:0.5px solid #1e2235;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4a5568;cursor:pointer;"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+                <div style="width:24px;height:24px;border-radius:7px;background:#0d1022;border:0.5px solid #1e2235;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4a5568;cursor:pointer;"><i class="ti ti-phone" aria-hidden="true"></i></div>
+              </div>
+            </div>
+            <div style="flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;gap:6px;align-items:flex-end;">
+                <div class="avatar" style="background:#0d1a2e;color:#378add;width:20px;height:20px;font-size:8px;">KJ</div>
+                <div>
+                  <div style="font-size:7px;color:#4a5568;margin-bottom:2px;">Kunle Johnson</div>
+                  <div class="bubble-ai">bro check this EUR/USD setup — bullish flag forming 👀
+                    <div style="background:#08090f;border:0.5px solid #1e2235;border-radius:8px;padding:6px 8px;margin-top:4px;">
+                      <div style="font-size:7px;color:#4a5568;margin-bottom:3px;font-family:'JetBrains Mono',monospace;">Shared chart · EUR/USD 1H</div>
+                      <div class="candles" style="height:25px;margin-bottom:3px;">
+                        <div class="c" style="height:12px;background:#0f6e56;"></div>
+                        <div class="c" style="height:18px;background:#993c1d;"></div>
+                        <div class="c" style="height:10px;background:#0f6e56;"></div>
+                        <div class="c" style="height:22px;background:#0f6e56;"></div>
+                        <div class="c" style="height:16px;background:#993c1d;"></div>
+                        <div class="c" style="height:25px;background:#0f6e56;"></div>
+                      </div>
+                      <div style="font-size:7px;color:#378add;font-family:'JetBrains Mono',monospace;">EUR/USD · 1.0842 · Bullish ↑</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;">
+                <div class="bubble-me">I see it! RSI is high though. What's your target?</div>
+              </div>
+              <div style="display:flex;gap:6px;align-items:flex-end;">
+                <div class="avatar" style="background:#0d1a2e;color:#378add;width:20px;height:20px;font-size:8px;">KJ</div>
+                <div>
+                  <div style="font-size:7px;color:#4a5568;margin-bottom:2px;">Kunle Johnson</div>
+                  <div class="bubble-ai">targeting 1.0860 — let me tag AI. <span style="color:#5dcaa5;font-weight:600;">@ForexAI</span> is this setup valid?</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;align-items:flex-end;">
+                <div style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:8px;color:white;flex-shrink:0;"><i class="ti ti-robot" aria-hidden="true"></i></div>
+                <div>
+                  <div style="font-size:7px;color:#5dcaa5;margin-bottom:2px;">ForexAI · tagged by Kunle</div>
+                  <div class="bubble-ai" style="background:linear-gradient(135deg,#0a1a0f,#0d2218);border-color:#1d9e75;color:#9fe1cb;">Setup <span style="color:#5dcaa5;font-weight:600;">valid</span> — bullish flag confirmed. Target 1.0860 gives <span style="color:#5dcaa5;font-weight:600;">1:2.1 R:R</span>. Stop below 1.0810. Watch RSI at 67.</div>
+                </div>
+              </div>
+            </div>
+            <div class="input-row" style="padding:8px 14px;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#0d1022;border:0.5px solid #1e2235;display:flex;align-items:center;justify-content:center;font-size:13px;color:#4a5568;cursor:pointer;flex-shrink:0;"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+              <div class="chat-in" style="font-size:9px;">Message Kunle... (type @ForexAI to tag AI)</div>
+              <button class="send-btn" style="width:26px;height:26px;"><i class="ti ti-send" aria-hidden="true" style="font-size:11px;color:white;"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="screen" id="screen-alerts">
+    <p class="screen-label">Alerts — real time political, economic and market event warnings</p>
+    <div class="duo">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="topbar">
+          <span style="font-size:11px;font-weight:600;color:#e2e8f0;">Smart Alerts</span>
+          <span style="font-size:8px;color:#5dcaa5;background:#0a1a0f;padding:2px 7px;border-radius:10px;border:0.5px solid #1d9e75;">4 active</span>
+        </div>
+        <div style="flex:1;padding:6px 10px;display:flex;flex-direction:column;gap:6px;">
+          <div style="background:linear-gradient(135deg,#1a0505,#250a07);border:0.5px solid #a32d2d;border-radius:10px;padding:7px 9px;">
+            <div style="display:flex;gap:6px;align-items:flex-start;">
+              <i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:13px;color:#e24b4a;flex-shrink:0;margin-top:1px;"></i>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:#f7c1c1;">HIGH — Fed Rate Decision</div>
+                <div style="font-size:7px;color:#791f1f;margin-top:2px;">In 2hrs · Affects USD pairs</div>
+                <div style="font-size:7px;color:#791f1f;margin-top:1px;">Expect high volatility. Consider closing open trades.</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#1a1205,#251a07);border:0.5px solid #ba7517;border-radius:10px;padding:7px 9px;">
+            <div style="display:flex;gap:6px;align-items:flex-start;">
+              <i class="ti ti-alert-circle" aria-hidden="true" style="font-size:13px;color:#ef9f27;flex-shrink:0;margin-top:1px;"></i>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:#fac775;">MEDIUM — UK CPI Data</div>
+                <div style="font-size:7px;color:#854f0b;margin-top:2px;">Tomorrow 9AM · Affects GBP pairs</div>
+                <div style="font-size:7px;color:#854f0b;margin-top:1px;">Inflation data release. GBP may move sharply.</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:#0a1a0f;border:0.5px solid #1d9e75;border-radius:10px;padding:7px 9px;">
+            <div style="display:flex;gap:6px;align-items:flex-start;">
+              <i class="ti ti-info-circle" aria-hidden="true" style="font-size:13px;color:#5dcaa5;flex-shrink:0;margin-top:1px;"></i>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:#9fe1cb;">LOW — ECB Speech</div>
+                <div style="font-size:7px;color:#085041;margin-top:2px;">Today 3PM · Affects EUR pairs</div>
+                <div style="font-size:7px;color:#085041;margin-top:1px;">Routine statement. Minor EUR movement expected.</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#0c0d1a,#0d1228);border:0.5px solid #1a3a5c;border-radius:10px;padding:7px 9px;">
+            <div style="display:flex;gap:6px;align-items:flex-start;">
+              <i class="ti ti-world" aria-hidden="true" style="font-size:13px;color:#378add;flex-shrink:0;margin-top:1px;"></i>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:#b5d4f4;">POLITICAL — US Election Update</div>
+                <div style="font-size:7px;color:#0c447c;margin-top:2px;">Ongoing · Affects USD broadly</div>
+                <div style="font-size:7px;color:#0c447c;margin-top:1px;">Market sentiment shifting. Monitor news closely.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="pnav-item"><i class="ti ti-chart-candlestick" aria-hidden="true"></i>Charts</div>
+          <div class="pnav-item"><i class="ti ti-pencil" aria-hidden="true"></i>Analyze</div>
+          <div class="pnav-item"><i class="ti ti-robot" aria-hidden="true"></i>AI</div>
+          <div class="pnav-item"><i class="ti ti-users" aria-hidden="true"></i>Social</div>
+          <div class="pnav-item active"><i class="ti ti-bell" aria-hidden="true"></i>Alerts</div>
+        </div>
+      </div>
+
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="bdots"><div class="bdot" style="background:#d85a30"></div><div class="bdot" style="background:#ef9f27"></div><div class="bdot" style="background:#1d9e75"></div></div>
+          <div class="burl">app.tradehive.io/alerts</div>
+        </div>
+        <div class="web-layout">
+          <div class="web-sidebar">
+            <span class="wlogo">TH</span>
+            <div class="wsico"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-robot" aria-hidden="true"></i></div>
+            <div class="wsico"><i class="ti ti-users" aria-hidden="true"></i></div>
+            <div class="wsico active"><i class="ti ti-bell" aria-hidden="true"></i></div>
+            <div class="wsico" style="margin-top:auto;"><i class="ti ti-settings" aria-hidden="true"></i></div>
+          </div>
+          <div class="web-content">
+            <div class="topbar">
+              <span style="font-size:13px;font-weight:600;color:#e2e8f0;">Smart Alerts</span>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span style="font-size:9px;color:#4a5568;">Filter:</span>
+                <span style="font-size:8px;padding:2px 8px;border-radius:8px;background:#1a0505;color:#e24b4a;border:0.5px solid #a32d2d;cursor:pointer;">High</span>
+                <span style="font-size:8px;padding:2px 8px;border-radius:8px;background:#1a1205;color:#fac775;border:0.5px solid #ba7517;cursor:pointer;">Medium</span>
+                <span style="font-size:8px;padding:2px 8px;border-radius:8px;background:#0a1a0f;color:#5dcaa5;border:0.5px solid #1d9e75;cursor:pointer;">Low</span>
+                <span style="font-size:8px;padding:2px 8px;border-radius:8px;background:#0d1022;color:#378add;border:0.5px solid #1e2235;cursor:pointer;">Political</span>
+              </div>
+            </div>
+            <div style="padding:12px 16px;display:flex;flex-direction:column;gap:10px;">
+              <div style="background:linear-gradient(135deg,#1a0505,#250a07);border:0.5px solid #a32d2d;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:18px;color:#e24b4a;flex-shrink:0;margin-top:2px;"></i>
+                  <div>
+                    <div style="font-size:11px;font-weight:600;color:#f7c1c1;">HIGH IMPACT — US Federal Reserve Rate Decision</div>
+                    <div style="font-size:9px;color:#791f1f;margin-top:3px;">In 2 hours · Affects all USD pairs · Source: Fed Reserve Calendar</div>
+                    <div style="font-size:9px;color:#791f1f;margin-top:3px;">Expect extreme volatility on EUR/USD, GBP/USD, USD/JPY. AI recommends tightening stop losses or closing open USD trades before the announcement.</div>
+                  </div>
+                </div>
+                <button style="background:#a32d2d;color:#fcebeb;border:none;border-radius:8px;padding:5px 10px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;">Set reminder</button>
+              </div>
+              <div style="background:linear-gradient(135deg,#1a1205,#251a07);border:0.5px solid #ba7517;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <i class="ti ti-alert-circle" aria-hidden="true" style="font-size:18px;color:#ef9f27;flex-shrink:0;margin-top:2px;"></i>
+                  <div>
+                    <div style="font-size:11px;font-weight:600;color:#fac775;">MEDIUM IMPACT — UK Consumer Price Index (CPI)</div>
+                    <div style="font-size:9px;color:#854f0b;margin-top:3px;">Tomorrow 9:00 AM · Affects GBP pairs · Source: UK ONS</div>
+                    <div style="font-size:9px;color:#854f0b;margin-top:3px;">Inflation data release. If CPI exceeds forecast, GBP may strengthen significantly against USD and EUR.</div>
+                  </div>
+                </div>
+                <button style="background:#854f0b;color:#faeeda;border:none;border-radius:8px;padding:5px 10px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;">Set reminder</button>
+              </div>
+              <div style="background:#0a1a0f;border:0.5px solid #1d9e75;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <i class="ti ti-info-circle" aria-hidden="true" style="font-size:18px;color:#5dcaa5;flex-shrink:0;margin-top:2px;"></i>
+                  <div>
+                    <div style="font-size:11px;font-weight:600;color:#9fe1cb;">LOW IMPACT — ECB President Speech</div>
+                    <div style="font-size:9px;color:#085041;margin-top:3px;">Today 3:00 PM · Affects EUR pairs · Source: ECB Calendar</div>
+                    <div style="font-size:9px;color:#085041;margin-top:3px;">Routine monetary policy statement. Minor EUR/USD movement expected unless unexpected hawkish remarks are made.</div>
+                  </div>
+                </div>
+                <button style="background:#0f6e56;color:#e1f5ee;border:none;border-radius:8px;padding:5px 10px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;">Set reminder</button>
+              </div>
+              <div style="background:linear-gradient(135deg,#0c0d1a,#0d1228);border:0.5px solid #1a3a5c;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <i class="ti ti-world" aria-hidden="true" style="font-size:18px;color:#378add;flex-shrink:0;margin-top:2px;"></i>
+                  <div>
+                    <div style="font-size:11px;font-weight:600;color:#b5d4f4;">POLITICAL — US Presidential Election Development</div>
+                    <div style="font-size:9px;color:#0c447c;margin-top:3px;">Ongoing · Broad USD market impact · Source: NewsAPI</div>
+                    <div style="font-size:9px;color:#0c447c;margin-top:3px;">Market sentiment shifting due to latest polling data. USD showing signs of uncertainty. Monitor developments closely before placing long-term trades.</div>
+                  </div>
+                </div>
+                <button style="background:#185fa5;color:#e6f1fb;border:none;border-radius:8px;padding:5px 10px;font-size:8px;font-family:'Space Grotesk',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;">Follow news</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>

@@ -1,0 +1,216 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+.browser{font-family:'Space Grotesk',sans-serif;background:#08090f;border-radius:14px;border:1px solid #1e2235;overflow:hidden;width:100%;}
+.browser-bar{background:#0d0f1a;padding:8px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #1e2235;}
+.dots{display:flex;gap:5px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.url-bar{flex:1;background:#08090f;border:0.5px solid #1e2235;border-radius:20px;padding:4px 12px;font-size:10px;color:#4a5568;font-family:'JetBrains Mono',monospace;}
+.layout{display:grid;grid-template-columns:52px 1fr 260px;height:480px;}
+.sidebar{background:#07080e;border-right:0.5px solid #1e2235;display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:16px;}
+.sico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#4a5568;cursor:pointer;}
+.sico.active{background:#0d1a2e;color:#378add;}
+.logo-s{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,#5dcaa5,#378add);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.main{background:#08090f;overflow:hidden;display:flex;flex-direction:column;}
+.topbar{padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5px solid #1e2235;}
+.pair-tabs{display:flex;gap:6px;}
+.tab{padding:4px 10px;border-radius:8px;font-size:10px;color:#4a5568;cursor:pointer;border:0.5px solid transparent;}
+.tab.active{background:#0d1a2e;color:#378add;border-color:#1a3a5c;}
+.top-right{display:flex;align-items:center;gap:10px;}
+.live-badge{display:flex;align-items:center;gap:4px;font-size:9px;color:#5dcaa5;background:#0a1a0f;padding:3px 8px;border-radius:20px;border:0.5px solid #1d9e75;}
+.ldot{width:5px;height:5px;border-radius:50%;background:#1d9e75;}
+.chart-section{padding:12px 16px;flex:1;}
+.pair-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
+.pname{font-size:18px;font-weight:600;color:#e2e8f0;}
+.pdetail{display:flex;gap:14px;align-items:center;}
+.pprice{font-family:'JetBrains Mono',monospace;font-size:16px;color:#5dcaa5;font-weight:500;}
+.pchange{font-size:11px;color:#1d9e75;background:#0a1a0f;padding:2px 8px;border-radius:10px;border:0.5px solid #0f6e56;}
+.chart-box{background:#0d1022;border-radius:14px;border:0.5px solid #1e2235;padding:12px 16px;margin-bottom:10px;}
+.candles{display:flex;align-items:flex-end;gap:5px;height:90px;margin-bottom:8px;}
+.c{flex:1;border-radius:2px;}
+.pred-row{display:flex;justify-content:space-between;align-items:center;}
+.pred-label{font-size:9px;color:#4a5568;font-family:'JetBrains Mono',monospace;}
+.pred-val{font-size:9px;color:#5dcaa5;font-family:'JetBrains Mono',monospace;}
+.pred-bar{height:3px;background:#1e2235;border-radius:10px;margin-top:5px;overflow:hidden;}
+.pred-fill{height:100%;width:74%;background:linear-gradient(90deg,#1d9e75,#378add);border-radius:10px;}
+.stats-row{display:flex;gap:8px;}
+.stat{flex:1;background:#0d1022;border:0.5px solid #1e2235;border-radius:12px;padding:8px 12px;}
+.slabel{font-size:8px;color:#4a5568;margin-bottom:3px;}
+.sval{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;}
+.sval.g{color:#5dcaa5;}
+.sval.w{color:#e2e8f0;}
+.sval.r{color:#d85a30;}
+.alert{margin:0 16px 10px;background:linear-gradient(135deg,#1a1205,#251a07);border:0.5px solid #ba7517;border-radius:12px;padding:8px 12px;display:flex;gap:8px;align-items:center;}
+.alert-t{font-size:10px;font-weight:600;color:#fac775;}
+.alert-b{font-size:9px;color:#854f0b;margin-top:1px;}
+.btns-row{display:flex;gap:8px;padding:0 16px 12px;}
+.bbuy{flex:1;background:linear-gradient(135deg,#0f6e56,#1d9e75);color:#e1f5ee;border:none;border-radius:12px;padding:9px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;}
+.bsell{flex:1;background:linear-gradient(135deg,#7a2010,#d85a30);color:#faece7;border:none;border-radius:12px;padding:9px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;}
+.chat-panel{background:#07080e;border-left:0.5px solid #1e2235;display:flex;flex-direction:column;}
+.chat-top{padding:10px 14px;border-bottom:0.5px solid #1a1d2e;display:flex;align-items:center;gap:8px;}
+.ai-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:13px;color:white;flex-shrink:0;}
+.ai-name{font-size:12px;font-weight:600;color:#e2e8f0;}
+.ai-st{font-size:8px;color:#5dcaa5;}
+.messages{flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:8px;overflow:hidden;}
+.msg-ai-wrap{display:flex;gap:5px;align-items:flex-end;}
+.mini-av{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;flex-shrink:0;}
+.bai{background:#0d1a2e;border:0.5px solid #1a3a5c;border-radius:3px 12px 12px 12px;padding:7px 9px;font-size:9px;color:#b5d4f4;line-height:1.6;font-family:'Space Grotesk',sans-serif;max-width:90%;}
+.bai .hl{color:#5dcaa5;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:8px;}
+.msg-user-wrap{display:flex;justify-content:flex-end;}
+.buser{background:linear-gradient(135deg,#0c447c,#185fa5);border-radius:12px 3px 12px 12px;padding:7px 9px;font-size:9px;color:#e6f1fb;line-height:1.6;font-family:'Space Grotesk',sans-serif;max-width:90%;border:0.5px solid #378add;}
+.chip{background:#0a1a0f;border:0.5px solid #1d9e75;border-radius:8px;padding:5px 8px;margin-top:4px;display:flex;justify-content:space-between;}
+.cs{text-align:center;}
+.cl{font-size:7px;color:#085041;font-family:'JetBrains Mono',monospace;}
+.cv{font-size:10px;font-weight:600;color:#5dcaa5;font-family:'JetBrains Mono',monospace;}
+.input-area{padding:8px 12px 10px;border-top:0.5px solid #1a1d2e;display:flex;gap:6px;align-items:center;background:#07080e;}
+.chat-in{flex:1;background:#0d1022;border:0.5px solid #1e2235;border-radius:20px;padding:6px 11px;font-size:9px;color:#4a5568;font-family:'Space Grotesk',sans-serif;}
+.send-btn{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1d9e75,#378add);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.send-btn i{font-size:12px;color:white;}
+</style>
+
+<h2 class="sr-only">ForexAI web dashboard mockup with chart, stats, alerts and AI chatbot</h2>
+
+<div style="padding:1rem 0;">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;font-family:'Space Grotesk',sans-serif;font-weight:500;text-align:center;"><i class="ti ti-browser" aria-hidden="true" style="font-size:13px;vertical-align:-2px;margin-right:4px"></i>Web app — browser view</p>
+
+<div class="browser">
+  <div class="browser-bar">
+    <div class="dots">
+      <div class="dot" style="background:#d85a30"></div>
+      <div class="dot" style="background:#ef9f27"></div>
+      <div class="dot" style="background:#1d9e75"></div>
+    </div>
+    <div class="url-bar">app.forexai.io/dashboard</div>
+    <i class="ti ti-refresh" aria-hidden="true" style="font-size:14px;color:#4a5568;"></i>
+  </div>
+
+  <div class="layout">
+
+    <div class="sidebar">
+      <span class="logo-s">FX</span>
+      <div class="sico active"><i class="ti ti-chart-candlestick" aria-hidden="true"></i></div>
+      <div class="sico"><i class="ti ti-robot" aria-hidden="true"></i></div>
+      <div class="sico"><i class="ti ti-history" aria-hidden="true"></i></div>
+      <div class="sico"><i class="ti ti-bell" aria-hidden="true"></i></div>
+      <div class="sico" style="margin-top:auto;"><i class="ti ti-settings" aria-hidden="true"></i></div>
+      <div class="sico"><i class="ti ti-user" aria-hidden="true"></i></div>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="pair-tabs">
+          <div class="tab active">EUR/USD</div>
+          <div class="tab">GBP/USD</div>
+          <div class="tab">USD/JPY</div>
+          <div class="tab">XAU/USD</div>
+        </div>
+        <div class="top-right">
+          <div class="live-badge"><span class="ldot"></span>Live markets</div>
+          <i class="ti ti-user-circle" aria-hidden="true" style="font-size:18px;color:#4a5568;"></i>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <div class="pair-header">
+          <span class="pname">EUR / USD</span>
+          <div class="pdetail">
+            <span class="pprice">1.0842</span>
+            <span class="pchange">+0.12% ↑</span>
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <div class="candles">
+            <div class="c" style="height:38px;background:#0f6e56;"></div>
+            <div class="c" style="height:52px;background:#993c1d;"></div>
+            <div class="c" style="height:30px;background:#0f6e56;"></div>
+            <div class="c" style="height:62px;background:#0f6e56;"></div>
+            <div class="c" style="height:44px;background:#993c1d;"></div>
+            <div class="c" style="height:57px;background:#0f6e56;"></div>
+            <div class="c" style="height:68px;background:#0f6e56;"></div>
+            <div class="c" style="height:50px;background:#993c1d;"></div>
+            <div class="c" style="height:60px;background:#0f6e56;"></div>
+            <div class="c" style="height:75px;background:#0f6e56;"></div>
+            <div class="c" style="height:55px;background:#993c1d;"></div>
+            <div class="c" style="height:80px;background:#0f6e56;"></div>
+          </div>
+          <div class="pred-row">
+            <span class="pred-label">AI prediction</span>
+            <span class="pred-val">BULLISH ↑ 74% confidence</span>
+          </div>
+          <div class="pred-bar"><div class="pred-fill"></div></div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat"><div class="slabel">Today P&L</div><div class="sval g">+$142.30</div></div>
+          <div class="stat"><div class="slabel">Win rate</div><div class="sval w">68%</div></div>
+          <div class="stat"><div class="slabel">Open trades</div><div class="sval w">3</div></div>
+          <div class="stat"><div class="slabel">Drawdown</div><div class="sval r">-2.1%</div></div>
+        </div>
+      </div>
+
+      <div class="alert">
+        <i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:16px;color:#ef9f27;flex-shrink:0;"></i>
+        <div>
+          <div class="alert-t">Fed Rate Decision in 2hrs — High impact USD event</div>
+          <div class="alert-b">Volatility expected across all USD pairs. Consider tightening stop losses or closing positions.</div>
+        </div>
+      </div>
+
+      <div class="btns-row">
+        <button class="bbuy">Buy EUR/USD</button>
+        <button class="bsell">Sell EUR/USD</button>
+      </div>
+    </div>
+
+    <div class="chat-panel">
+      <div class="chat-top">
+        <div class="ai-av"><i class="ti ti-robot" aria-hidden="true" style="font-size:13px"></i></div>
+        <div>
+          <div class="ai-name">ForexAI Analyst</div>
+          <div class="ai-st"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#1d9e75;margin-right:3px;vertical-align:1px;"></span>Analyzing markets</div>
+        </div>
+      </div>
+
+      <div class="messages">
+        <div class="msg-ai-wrap">
+          <div class="mini-av"><i class="ti ti-robot" aria-hidden="true" style="font-size:9px"></i></div>
+          <div class="bai">EUR/USD forming a <span class="hl">bullish flag</span> on 1H. Expecting breakout above <span class="hl">1.0860</span>.</div>
+        </div>
+
+        <div class="msg-user-wrap">
+          <div class="buser">I disagree — RSI is overbought. Price will reverse down.</div>
+        </div>
+
+        <div class="msg-ai-wrap">
+          <div class="mini-av"><i class="ti ti-robot" aria-hidden="true" style="font-size:9px"></i></div>
+          <div>
+            <div class="bai">Valid. But volume rising on up moves — overbought holds in strong trends. What's your stop?</div>
+            <div class="chip">
+              <div class="cs"><div class="cl">win rate</div><div class="cv">61%</div></div>
+              <div class="cs"><div class="cl">R:R</div><div class="cv">1:2.3</div></div>
+              <div class="cs"><div class="cl">backtests</div><div class="cv">847</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-user-wrap">
+          <div class="buser">Stop loss below 1.0810 support zone.</div>
+        </div>
+
+        <div class="msg-ai-wrap">
+          <div class="mini-av"><i class="ti ti-robot" aria-hidden="true" style="font-size:9px"></i></div>
+          <div class="bai">Smart. Risk/reward favorable. <span class="hl">Caution advised</span> — Fed decision in 2hrs.</div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="chat-in">Type your analysis...</div>
+        <button class="send-btn" aria-label="Send"><i class="ti ti-send" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
